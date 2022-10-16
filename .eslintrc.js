@@ -16,13 +16,7 @@ module.exports = {
     sourceType: "module",
   },
   globals: { React: true },
-  plugins: [
-    "react",
-    "react-hooks",
-    "prettier",
-    "@typescript-eslint",
-    "import",
-  ],
+  plugins: ["react", "react-hooks", "prettier", "@typescript-eslint", "import"],
   settings: { react: { version: "18.1.0" } },
   parser: "@typescript-eslint/parser",
   rules: {
@@ -63,5 +57,5 @@ module.exports = {
     "no-await-in-loop": "error",
     "linebreak-style": 0,
   },
-  ignorePatterns: ["node_modules/", "webpack.config.js"],
+  ignorePatterns: ["node_modules/"],
 };

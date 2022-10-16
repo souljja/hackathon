@@ -1,25 +1,25 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CircularDependencyPlugin = require('circular-dependency-plugin');
-const path = require('path');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CircularDependencyPlugin = require("circular-dependency-plugin");
+const path = require("path");
 
 module.exports = (env, argv) => {
-  const isDevMode = argv.mode === 'development';
+  const isDevMode = argv.mode === "development";
 
   return {
     mode: argv.mode,
-    entry: './src/index.tsx',
+    entry: "./src/index.tsx",
     output: {
-      filename: '[contenthash].bundle.js',
-      chunkFilename: '[contenthash].chunk.js',
-      path: path.resolve(process.cwd(), 'dist'),
+      filename: "[contenthash].bundle.js",
+      chunkFilename: "[contenthash].chunk.js",
+      path: path.resolve(process.cwd(), "dist"),
       clean: true,
     },
-    target: 'web',
+    target: "web",
     resolve: {
-      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      extensions: [".js", ".jsx", ".ts", ".tsx"],
       alias: {
-        '@': path.resolve(__dirname, '/src'),
-        assets: path.resolve(__dirname, 'assets'),
+        "@": path.resolve(__dirname, "/src"),
+        assets: path.resolve(__dirname, "assets"),
       },
     },
     devServer: {
@@ -31,57 +31,57 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './src/index.html',
-        base: '/',
-        scriptLoading: 'defer',
+        template: "./src/index.html",
+        base: "/",
+        scriptLoading: "defer",
       }),
       ...(isDevMode
-          ? [
+        ? [
             new CircularDependencyPlugin({
               exclude: /node_modules/,
               failOnError: true,
             }),
           ]
-          : []),
+        : []),
     ],
     module: {
       rules: [
         {
           test: /\.(js|ts)x?$/,
-          exclude: path.resolve(__dirname, 'node_modules'),
+          exclude: path.resolve(__dirname, "node_modules"),
           use: {
-            loader: 'babel-loader',
+            loader: "babel-loader",
           },
         },
         {
           test: /\.css/,
-          use: ['style-loader', 'css-loader'],
+          use: ["style-loader", "css-loader"],
         },
         {
           test: /\.(jpg|jpeg|gif|png)/,
-          type: 'asset/resource',
+          type: "asset/resource",
           generator: {
-            filename: 'static/img/[hash][ext]',
+            filename: "static/img/[hash][ext]",
           },
         },
         {
           test: /\.(ttf|woff|woff2|otf)/,
-          type: 'asset/resource',
+          type: "asset/resource",
           generator: {
-            filename: 'static/fonts/[hash][ext]',
+            filename: "static/fonts/[hash][ext]",
           },
         },
         {
           test: /\.svg/,
-          type: 'asset/inline',
+          type: "asset/inline",
         },
       ],
     },
     optimization: {
       minimize: !isDevMode,
-      chunkIds: 'named',
+      chunkIds: "named",
       splitChunks: {
-        chunks: 'all',
+        chunks: "all",
         cacheGroups: {
           vendors: {
             test: /[\\/]node_modules[\\/]/,
